@@ -1,0 +1,16 @@
+# Secrets: real values live only in .env, never in git
+.env
+
+# Python virtual environment created by uv
+.venv/
+
+# Python and tool caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Build output
+dist/
+build/
+*.egg-info/
