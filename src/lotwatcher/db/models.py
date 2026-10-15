@@ -175,6 +175,34 @@ class Listing(Base):
     updated_at: Mapped[datetime] = updated_at_column()
 
 
+class ApiCallCount(Base):
+    """Calls made to one source in one calendar month (UTC). month is the 1st of the month."""
+
+    __tablename__ = "api_call_counts"
+    __table_args__ = (CheckConstraint("calls >= 0", "calls_not_negative"),)
+
+    source: Mapped[str] = mapped_column(String(32), primary_key=True)
+    month: Mapped[date] = mapped_column(Date, primary_key=True)
+    calls: Mapped[int] = mapped_column(Integer, server_default=text("0"))
+    updated_at: Mapped[datetime] = updated_at_column()
+
+
+class ApiCacheEntry(Base):
+    """A successful API response, keyed by request. Never holds API keys or secret headers."""
+
+    __tablename__ = "api_cache"
+
+    # SHA-256 of source, path and sorted parameters, without secrets
+    cache_key: Mapped[str] = mapped_column(String(64), primary_key=True)
+    source: Mapped[str] = mapped_column(String(32))
+    # Readable copy of the same non-secret request parts, for debugging
+    request: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    response: Mapped[Any] = mapped_column(JSONB)
+    fetched_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    # Empty means the entry never expires
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
 class PriceSnapshot(Base):
     """One row per listing per day. Price is empty when the listing shows no price."""
 

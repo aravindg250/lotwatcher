@@ -141,3 +141,33 @@ Commands added:
 - Confirm models and migrations match: `docker compose run --rm api alembic check`
 
 Decided for step 5 (2026-10-15): listings get their own `year`, `make`, `model` and `trim` columns, holding what each source reported. The spec keeps these only on `vehicles`, but the merge candidate search needs them for listings not yet linked to a vehicle. The columns are added by a migration in step 5. Chosen over reading them from `raw` or creating a vehicle for every listing straight away.
+
+### Step 3: shared source client (done 2026-10-15)
+
+Goal: one client that every data source uses for web requests. It handles caching, the monthly budget, pacing and retries, so no source does these itself. No real API is called in step 3.
+
+Request flow: cache check → reserve one call in the budget (stop at the limit) → rate limiter wait → send → on a temporary failure, wait longer and retry from the budget step → cache the successful response.
+
+Decisions:
+- **HTTP library: `httpx2`**, moved from dev-only to an app dependency. Its fake transport lets tests return scripted responses without a network.
+- **Sync, not async.** Daily volume is small.
+- **Retries: our own short code, not `tenacity`.** It retries network errors, 429 and 5xx, up to 3 retries with waits of 1, 2 and 4 seconds, and honours a `Retry-After` header. It never retries other 4xx errors. Every attempt counts against the budget.
+- **Two new Postgres tables**, from a new migration: `api_call_counts` (source, month, calls) and `api_cache` (request key, source, response, fetched at, expires at).
+- **The budget stops 5% below each cap** (Auto.dev at 950 of 1,000; MarketCheck at 475 of 500). A call is reserved before it is sent, with one database statement that adds 1 only if still under the limit, saved immediately.
+- **Month means calendar month in UTC.** Each provider's billing month gets checked in step 4.
+- **Alerts for now: a warning in the logs plus an error that stops that source.** Real alerts come with monitoring in Phase 3.
+- **API keys** come from environment variables and are never part of a cache key, never stored in the cache, and never logged.
+- **Only successful responses are cached.** Cache time is 24 hours by default; a source can choose a different time or "forever" (decoded VINs).
+- **Per-source settings** (base address, calls per second, monthly cap, cache time) are Python constants, added in step 4. Unknown limits get checked against each provider's docs then, not guessed.
+- **Tests use no network and no real waiting** (a fake clock). Step 3's tests use small made-up responses written inside the tests; recorded real API responses come with each source in step 4.
+
+Built in step 3:
+- `src/lotwatcher/sources/`: `client.py` (`SourceClient.get_json`), `budget.py`, `cache.py`, `rate_limit.py`, and `clock.py` (the real clock; tests use a fake one).
+- `db/session.py` gained `transaction()`: a short transaction that is saved at once, or nested inside the caller's transaction in tests.
+- Migration `9893efd57f47` adds `api_call_counts` (key: source + month) and `api_cache` (key: SHA-256 of source, path and sorted non-secret parameters).
+- `httpx2` moved to app dependencies. Ruff setting added: `lotwatcher` is always sorted as first-party.
+- Key protection: `httpx2` logs full request URLs (including keys) at INFO level, so the client sets its logger to WARNING. Error messages name only the path and the error type, never the URL. Verified: with the logger line removed, the leak test fails.
+- A response that isn't JSON is treated as a failed request, not retried, and not cached.
+- Every request has a 30-second timeout; a timeout counts as a network error and is retried. (This and the line above confirmed 2026-10-15.)
+
+Open: should a `Retry-After` longer than 60 seconds make the client give up instead of waiting? (Not built yet.)

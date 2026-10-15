@@ -6,6 +6,7 @@ requires-python = ">=3.12,<3.13"
 dependencies = [
     "alembic>=1.20.0",
     "fastapi>=0.143.2",
+    "httpx2>=2.13.1",
     "psycopg[binary]>=3.3.6",
     "sqlalchemy>=2.1.4",
     "uvicorn>=0.54.0",
@@ -26,9 +27,12 @@ target-version = "py312"
 # E/F: standard errors, I: import sorting, UP: modern Python syntax, B: likely bugs
 select = ["E", "F", "I", "UP", "B"]
 
+[tool.ruff.lint.isort]
+# Always sort our own package as first-party, separate from third-party imports
+known-first-party = ["lotwatcher"]
+
 [dependency-groups]
 dev = [
-    "httpx2>=2.13.1",
     "pytest>=9.1.1",
     "ruff>=0.17.1",
 ]
