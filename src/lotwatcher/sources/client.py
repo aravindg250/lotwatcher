@@ -24,6 +24,8 @@ logging.getLogger("httpx2").setLevel(logging.WARNING)
 DEFAULT_TTL = timedelta(hours=24)
 # Waits before each retry; its length is the number of retries
 RETRY_WAITS = (1, 2, 4)
+# If a server asks us to wait longer than this, give up rather than stall the daily job
+MAX_SERVER_WAIT_SECONDS = 60
 
 
 class SourceRequestError(Exception):
@@ -117,6 +119,14 @@ class SourceClient:
                 if not _is_temporary(status_code):
                     raise SourceRequestError(self.source, path, problem, status_code)
                 server_wait = _retry_after_seconds(response)
+                if server_wait is not None and server_wait > MAX_SERVER_WAIT_SECONDS:
+                    raise SourceRequestError(
+                        self.source,
+                        path,
+                        f"{problem}, server asked to wait {server_wait:g}s "
+                        f"(over the {MAX_SERVER_WAIT_SECONDS}s limit)",
+                        status_code,
+                    )
 
             if attempt == len(RETRY_WAITS):
                 raise SourceRequestError(

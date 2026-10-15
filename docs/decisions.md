@@ -170,4 +170,4 @@ Built in step 3:
 - A response that isn't JSON is treated as a failed request, not retried, and not cached.
 - Every request has a 30-second timeout; a timeout counts as a network error and is retried. (This and the line above confirmed 2026-10-15.)
 
-Open: should a `Retry-After` longer than 60 seconds make the client give up instead of waiting? (Not built yet.)
+- **`Retry-After` limit (approved and built 2026-10-15):** if a server asks for a wait over 60 seconds, the client gives up on that request with a clear error instead of stalling the daily job. Exactly 60 seconds is still waited.

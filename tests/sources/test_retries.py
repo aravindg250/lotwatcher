@@ -72,3 +72,22 @@ def test_api_key_is_sent_but_never_appears_in_errors_or_logs(make_client, caplog
     for text in (str(error.value), caplog.text):
         assert SECRET_KEY not in text
         assert SECRET_HEADER not in text
+
+
+def test_retry_after_over_sixty_seconds_gives_up_instead_of_waiting(make_client, clock):
+    server = ScriptedServer(status(429, headers={"Retry-After": "3600"}), ok())
+
+    with pytest.raises(SourceRequestError) as error:
+        make_client(server).get_json("/listings")
+
+    assert error.value.status_code == 429
+    assert clock.sleeps == []
+    assert len(server.requests) == 1
+
+
+def test_retry_after_of_exactly_sixty_seconds_is_waited(make_client, clock):
+    server = ScriptedServer(status(429, headers={"Retry-After": "60"}), ok())
+
+    make_client(server).get_json("/listings")
+
+    assert clock.sleeps == [60]
