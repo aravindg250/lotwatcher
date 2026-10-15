@@ -99,7 +99,7 @@ Choices made during step 1 (all approved 2026-10-15):
 - **`src/` and `tests/` are mounted into the api container**, so code and test edits are picked up without rebuilding. This works because the project is installed in editable mode.
 - **The api container has a health check** that calls `/health`, so `docker compose up --wait` only reports ready once the API is answering.
 
-### Step 2: database design and migrations (plan approved 2026-10-15, in progress)
+### Step 2: database design and migrations (done 2026-10-15)
 
 Goal: the Phase 1 core tables exist in Postgres, created by Alembic migrations, with tests for the rules the database enforces. Python code that uses the tables comes in later steps.
 
@@ -127,3 +127,17 @@ Database rules: a VIN is unique when present; `(source, source listing ID)` is u
 New dependencies (approved): `sqlalchemy`, `alembic`, `psycopg[binary]`.
 
 Test database: `lotwatcher_test` in the same Postgres container, set by `TEST_DATABASE_URL`. Each test run drops and recreates it and applies all migrations. The code refuses to do this unless the database name ends in `_test`. Each test runs in a transaction that is rolled back.
+
+Choices made while building step 2 (approved 2026-10-15 unless noted):
+- **Price may be empty** on `listings` and `price_snapshots`, for "call for price" listings. Negative prices are still rejected.
+- **Database addresses use `postgresql+psycopg://`** so SQLAlchemy picks the psycopg 3 driver. `TEST_DATABASE_URL` was added to `.env.example`.
+- Installed versions: sqlalchemy 2.1.4, alembic 1.20.0, psycopg 3.3.6 (with psycopg-binary 3.3.6). Alembic also brings in mako 1.4.3 and markupsafe 3.0.4 (templates for new migration files).
+- Small details decided while building, pending your review: dealers have separate `address`, `city`, `state` and `zip` columns plus `latitude` and `longitude`; saved searches have sanity rules (year range in order, max price and mileage not negative, radius positive); every table has `created_at`, and tables that change have `updated_at`; lookup indexes are on `listings.vehicle_id`, `listings.vin`, `listings.dealer_id`, `dealer_source_ids.dealer_id` and `saved_searches.user_id`.
+- `alembic.ini` stores no database address (`env.py` reads `DATABASE_URL`). Migration files are named with the date first, and each new one is formatted and lint-fixed by ruff automatically.
+
+Commands added:
+- Apply migrations: `docker compose run --rm api alembic upgrade head`
+- Draft a migration after changing `models.py`: `docker compose run --rm --user "$(id -u):$(id -g)" -e RUFF_NO_CACHE=true api alembic revision --autogenerate -m "<what changed>"`, then check the file by hand.
+- Confirm models and migrations match: `docker compose run --rm api alembic check`
+
+Decided for step 5 (2026-10-15): listings get their own `year`, `make`, `model` and `trim` columns, holding what each source reported. The spec keeps these only on `vehicles`, but the merge candidate search needs them for listings not yet linked to a vehicle. The columns are added by a migration in step 5. Chosen over reading them from `raw` or creating a vehicle for every listing straight away.

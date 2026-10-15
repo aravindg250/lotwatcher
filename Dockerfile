@@ -16,6 +16,7 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-install-project
 
 # Then the project itself
+COPY alembic.ini ./
 COPY src ./src
 COPY tests ./tests
 RUN uv sync --frozen
