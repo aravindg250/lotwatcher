@@ -1,0 +1,215 @@
+{
+  "note": "Real autodev response shape, trimmed to 3 listings. Every value that could identify a car, dealer or person is replaced with an obvious fake (VINs starting with 0, Example Motors, example.com). Car details are real.",
+  "recorded_at": "2026-10-16T00:23:56.637054+00:00",
+  "request": {
+    "params": {
+      "distance": "50",
+      "limit": "20",
+      "page": "1",
+      "vehicle.make": "Toyota",
+      "vehicle.model": "RAV4",
+      "vehicle.year": "2019-2022",
+      "zip": "75201"
+    },
+    "path": "/listings",
+    "source": "autodev"
+  },
+  "response": {
+    "actions": {
+      "Toggle Link Domains": "https://api.auto.dev/listings?vehicle.make=Toyota&vehicle.model=RAV4&vehicle.year=2019-2022&zip=75201&distance=50&page=1&limit=20&domains=true"
+    },
+    "api": {
+      "account": "https://api.auto.dev/account",
+      "description": "\ud83d\ude98 Vehicle Listings",
+      "docs": "https://docs.auto.dev/v2/products/vehicle-listings",
+      "from": "https://auto.dev",
+      "name": "api.auto.dev",
+      "type": "data",
+      "url": "https://api.auto.dev/listings"
+    },
+    "data": [
+      {
+        "@id": "https://api.auto.dev/listings/0FAKE000789962602",
+        "createdAt": "2026-08-07 00:39:40",
+        "history": {
+          "accidentCount": 0,
+          "accidents": false,
+          "oneOwner": false,
+          "ownerCount": 2,
+          "personalUse": true,
+          "usageType": "Personal Use"
+        },
+        "location": [
+          -96.72,
+          32.86
+        ],
+        "retailListing": {
+          "carfaxUrl": "https://example.com/carfax/0FAKE000789962602",
+          "city": "Dallas",
+          "cpo": false,
+          "dealer": "Example Motors 220",
+          "dealerId": "d_example220",
+          "miles": 51513,
+          "photoCount": 38,
+          "price": 32323,
+          "primaryImage": "https://example.com/photos/0FAKE000789962602.jpg",
+          "state": "TX",
+          "used": true,
+          "vdp": "https://example.com/dealer220/listing/0FAKE000789962602",
+          "zip": "75201"
+        },
+        "vehicle": {
+          "baseInvoice": 35184,
+          "baseMsrp": 37430,
+          "bodyStyle": "SUV",
+          "confidence": 0.995,
+          "cylinders": 4,
+          "doors": 4,
+          "drivetrain": "AWD",
+          "engine": "2.5L 4Cyl Gasoline",
+          "exteriorColor": "White",
+          "fuel": "Gasoline",
+          "interiorColor": "Gray",
+          "make": "Toyota",
+          "model": "RAV4",
+          "seats": 5,
+          "series": "Limited 4dr SUV AWD (2.5L 4cyl gas/electric hybrid CVT)",
+          "squishVin": "0FAKE00089",
+          "style": "4dr SUV",
+          "transmission": "Automatic",
+          "transmissionSource": "listing",
+          "trim": "Limited",
+          "type": "Crossover",
+          "vin": "0FAKE000789962602",
+          "year": 2021
+        },
+        "vin": "0FAKE000789962602",
+        "wholesaleListing": null
+      },
+      {
+        "@id": "https://api.auto.dev/listings/0FAKE000797685978",
+        "createdAt": "2026-08-07 00:36:28",
+        "history": {
+          "accidentCount": 0,
+          "accidents": false,
+          "oneOwner": false,
+          "ownerCount": 3,
+          "personalUse": true,
+          "usageType": "Personal Use"
+        },
+        "location": [
+          -96.72,
+          32.86
+        ],
+        "retailListing": {
+          "carfaxUrl": "https://example.com/carfax/0FAKE000797685978",
+          "city": "Dallas",
+          "cpo": false,
+          "dealer": "Example Motors 220",
+          "dealerId": "d_example220",
+          "miles": 38732,
+          "photoCount": 39,
+          "price": 32835,
+          "primaryImage": "https://example.com/photos/0FAKE000797685978.jpg",
+          "state": "TX",
+          "used": true,
+          "vdp": "https://example.com/dealer220/listing/0FAKE000797685978",
+          "zip": "75201"
+        },
+        "vehicle": {
+          "baseInvoice": 33922,
+          "baseMsrp": 36280,
+          "bodyStyle": "SUV",
+          "confidence": 0.995,
+          "cylinders": 4,
+          "doors": 4,
+          "drivetrain": "AWD",
+          "engine": "2.5L 4Cyl Gasoline",
+          "exteriorColor": "Unspecified",
+          "fuel": "Gasoline",
+          "interiorColor": "Black",
+          "make": "Toyota",
+          "model": "RAV4",
+          "seats": 5,
+          "series": "Limited 4dr SUV AWD (2.5L 4cyl 8A)",
+          "squishVin": "0FAKE00097",
+          "style": "4dr SUV",
+          "transmission": "Automatic",
+          "transmissionSource": "listing",
+          "trim": "Limited",
+          "type": "Crossover",
+          "vin": "0FAKE000797685978",
+          "year": 2021
+        },
+        "vin": "0FAKE000797685978",
+        "wholesaleListing": null
+      },
+      {
+        "@id": "https://api.auto.dev/listings/0FAKE000919874091",
+        "createdAt": "2026-08-16 01:43:22",
+        "history": {
+          "accidentCount": 0,
+          "accidents": false,
+          "oneOwner": false,
+          "ownerCount": 3,
+          "personalUse": true,
+          "usageType": "Personal Use"
+        },
+        "location": [
+          -96.768,
+          32.812
+        ],
+        "retailListing": {
+          "carfaxUrl": "https://example.com/carfax/0FAKE000919874091",
+          "city": "Dallas",
+          "cpo": false,
+          "dealer": "Example Motors 7508",
+          "dealerId": "d_example7508",
+          "miles": 35064,
+          "photoCount": 30,
+          "price": 32564,
+          "primaryImage": "https://example.com/photos/0FAKE000919874091.jpg",
+          "state": "TX",
+          "used": true,
+          "vdp": "https://example.com/dealer7508/listing/0FAKE000919874091",
+          "zip": "75201"
+        },
+        "vehicle": {
+          "baseInvoice": 32613,
+          "baseMsrp": 34880,
+          "bodyStyle": "SUV",
+          "confidence": 0.995,
+          "cylinders": 4,
+          "doors": 4,
+          "drivetrain": "FWD",
+          "engine": "2.5L 4Cyl Gasoline",
+          "exteriorColor": "Gray",
+          "fuel": "Gasoline",
+          "interiorColor": "Black",
+          "make": "Toyota",
+          "model": "RAV4",
+          "seats": 5,
+          "series": "Limited 4dr SUV (2.5L 4cyl 8A)",
+          "squishVin": "0FAKE00019",
+          "style": "4dr SUV",
+          "transmission": "Automatic",
+          "transmissionSource": "listing",
+          "trim": "Limited",
+          "type": "Crossover",
+          "vin": "0FAKE000919874091",
+          "year": 2021
+        },
+        "vin": "0FAKE000919874091",
+        "wholesaleListing": null
+      }
+    ],
+    "links": {
+      "first": "https://api.auto.dev/listings?vehicle.make=Toyota&vehicle.model=RAV4&vehicle.year=2019-2022&zip=75201&distance=50&page=1&limit=20",
+      "next": "https://api.auto.dev/listings?vehicle.make=Toyota&vehicle.model=RAV4&vehicle.year=2019-2022&zip=75201&distance=50&page=2&limit=20",
+      "prev": "https://api.auto.dev/listings?vehicle.make=Toyota&vehicle.model=RAV4&vehicle.year=2019-2022&zip=75201&distance=50&page=1&limit=20",
+      "self": "https://api.auto.dev/listings?vehicle.make=Toyota&vehicle.model=RAV4&vehicle.year=2019-2022&zip=75201&distance=50&page=1&limit=20",
+      "toggleFacets": "https://api.auto.dev/listings?vehicle.make=Toyota&vehicle.model=RAV4&vehicle.year=2019-2022&zip=75201&distance=50&page=1&limit=20&includes=facets",
+      "toggleTotal": "https://api.auto.dev/listings?vehicle.make=Toyota&vehicle.model=RAV4&vehicle.year=2019-2022&zip=75201&distance=50&page=1&limit=20&includes=total"
+    }
+  }
+}

@@ -100,3 +100,19 @@ def test_a_response_failing_the_shape_check_raises_and_is_not_cached(make_client
 
     assert client.get_json("/listings", check=has_results) == {"results": []}
     assert len(server.requests) == 2
+
+
+def test_clean_runs_before_caching_so_dropped_fields_are_never_stored(make_client, db):
+    server = ScriptedServer(ok({"results": [1], "user": {"email": "owner@example.com"}}))
+    client = make_client(server)
+
+    def drop_user(body):
+        return {k: v for k, v in body.items() if k != "user"}
+
+    first = client.get_json("/listings", clean=drop_user)
+    second = client.get_json("/listings", clean=drop_user)
+
+    assert first == second == {"results": [1]}
+    stored = db.execute(text("SELECT api_cache::text FROM api_cache")).scalars().all()
+    assert len(stored) == 1
+    assert "owner@example.com" not in stored[0]

@@ -89,11 +89,14 @@ class SourceClient:
         params: dict[str, Any] | None = None,
         ttl: timedelta | None = DEFAULT_TTL,
         check: Callable[[Any], bool] | None = None,
+        clean: Callable[[Any], Any] | None = None,
     ) -> Any:
         """GET a JSON response, from the cache when fresh. ttl=None caches it forever.
 
         check, if given, must accept the response's shape; a response it rejects raises
         UnexpectedResponse and is not cached, so the next run asks again.
+        clean, if given, runs on a fresh response after check and before caching, so anything
+        it removes (such as account details a provider echoes back) is never stored.
         """
         params = dict(params or {})
         key, request = cache_key(self.source, path, params)
@@ -108,6 +111,8 @@ class SourceClient:
             raise UnexpectedResponse(
                 f"{self.source} {path}: response did not have the expected shape"
             )
+        if clean is not None:
+            body = clean(body)
         self._cache.put(key, self.source, request, body, ttl)
         return body
 
