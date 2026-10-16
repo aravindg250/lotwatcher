@@ -2,7 +2,7 @@
 ever widen. Delisting is in delisting.py; duplicate merging (vehicle_id) is step 7.
 """
 
-from datetime import date
+from datetime import date, timedelta
 
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
@@ -68,4 +68,44 @@ def store_listing(session: Session, listing: NormalizedListing, seen_on: date) -
             constraint="uq_price_snapshots_listing_id_snapshot_date", set_=values
         )
     )
+    return row.id
+
+
+def store_sold_listing(
+    session: Session, listing: NormalizedListing, first_seen_on: date, last_seen_on: date
+) -> int | None:
+    """Save a car a source reports as sold or removed (the weekly backfill), as delisted at its
+    last price. A listing we already track is left alone: our own observation wins.
+    Returns listings.id, or None when it was already tracked."""
+    exists = session.scalar(
+        select(Listing.id).where(
+            Listing.source == listing.source,
+            Listing.source_listing_id == listing.source_listing_id,
+        )
+    )
+    if exists is not None:
+        return None
+
+    row = Listing(
+        source=listing.source,
+        source_listing_id=listing.source_listing_id,
+        first_seen_on=min(first_seen_on, last_seen_on),
+        last_seen_on=last_seen_on,
+        status="delisted",
+        # The first day it was gone, matching what our own delisting rule records
+        delisted_on=last_seen_on + timedelta(days=1),
+        dealer_id=match_dealer(session, listing.dealer) if listing.dealer else None,
+        **{name: getattr(listing, name) for name in FIELDS},
+    )
+    session.add(row)
+    session.flush()
+    session.add(
+        PriceSnapshot(
+            listing_id=row.id,
+            snapshot_date=last_seen_on,
+            price=listing.price,
+            mileage=listing.mileage,
+        )
+    )
+    session.flush()
     return row.id

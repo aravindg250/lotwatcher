@@ -2,6 +2,8 @@ services:
   db:
     image: postgres:17
     env_file: .env
+    # Come back by itself whenever Docker Desktop starts
+    restart: unless-stopped
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -32,7 +34,17 @@ services:
       db:
         condition: service_healthy
 
-  # The worker is added in step 9.
+  # Queues the 6 a.m. daily run and the Sunday backfill, then runs them
+  worker:
+    build: .
+    env_file: .env
+    command: ["python", "-m", "lotwatcher.worker"]
+    restart: unless-stopped
+    volumes:
+      - ./src:/app/src
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   pgdata:
