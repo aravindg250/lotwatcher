@@ -1,5 +1,5 @@
 {
-  "note": "Real autodev response shape, trimmed to 2 listings. Every value that could identify a car, dealer or person is replaced with an obvious fake (VINs starting with 0, Example Motors, example.com). Car details are real.",
+  "note": "Real autodev response shape, trimmed to 2 listings. Every value that could identify a car, dealer or person is replaced with an obvious fake (VINs starting with 0, Example Motors, 555 phones, example.com). Car details are real.",
   "recorded_at": "2026-10-16T00:24:36.786985+00:00",
   "request": {
     "params": {
@@ -41,22 +41,22 @@
           "usageType": "Personal Use"
         },
         "location": [
-          -96.708,
-          32.872
+          -96.696,
+          32.884
         ],
         "retailListing": {
           "carfaxUrl": "https://example.com/carfax/0FAKE000X51546800",
           "city": "Dallas",
           "cpo": false,
-          "dealer": "Example Motors 1373",
-          "dealerId": "d_example1373",
+          "dealer": "Example Motors 226",
+          "dealerId": "d_example495407",
           "miles": 13111,
           "photoCount": 37,
           "price": 35143,
           "primaryImage": "https://example.com/photos/0FAKE000X51546800.jpg",
           "state": "TX",
           "used": true,
-          "vdp": "https://example.com/dealer1373/listing/0FAKE000X51546800",
+          "vdp": "https://example.com/dealer226/listing/0FAKE000X51546800",
           "zip": "75201"
         },
         "vehicle": {
@@ -99,22 +99,22 @@
           "usageType": "Personal Use"
         },
         "location": [
-          -96.8,
-          32.78
+          -96.644,
+          32.936
         ],
         "retailListing": {
           "carfaxUrl": "https://example.com/carfax/0FAKE000950377925",
           "city": "Dallas",
           "cpo": false,
-          "dealer": "Example Motors 1350",
-          "dealerId": "d_example1350",
+          "dealer": "Example Motors 8939",
+          "dealerId": "d_example455365",
           "miles": 15288,
           "photoCount": 35,
           "price": 31341,
           "primaryImage": "https://example.com/photos/0FAKE000950377925.jpg",
           "state": "TX",
           "used": true,
-          "vdp": "https://example.com/dealer1350/listing/0FAKE000950377925",
+          "vdp": "https://example.com/dealer8939/listing/0FAKE000950377925",
           "zip": "75201"
         },
         "vehicle": {

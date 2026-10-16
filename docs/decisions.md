@@ -172,7 +172,7 @@ Built in step 3:
 
 - **`Retry-After` limit (approved and built 2026-10-15):** if a server asks for a wait over 60 seconds, the client gives up on that request with a clear error instead of stalling the daily job. Exactly 60 seconds is still waited.
 
-### Step 4: source clients (planning, 2026-10-15)
+### Step 4: source clients (done 2026-10-15)
 
 Findings from the providers' docs (2026-10-15):
 - Auto.dev: `GET https://api.auto.dev/listings`, key as an `Authorization: Bearer` header. Free plan: 1,000 calls a month, 5 per second, and **20 listings per page** (larger requests are silently capped). The mileage filter name is not yet confirmed.
@@ -214,3 +214,14 @@ Auto.dev (built 2026-10-15):
 - `SearchFilters` (in `sources/filters.py`) is the shared description of a search, built from a saved search.
 - `lotwatcher/vin.py`: VIN clean-up and the standard check-digit test, so bad VINs can be skipped without an API call.
 - **Fixture cleaning (`scripts/clean_fixture.py`):** keeps a few listings and replaces every identifying value with a fake. Fake VINs start with `0` (no manufacturer uses it) and pass the check digit; dealers become `Example Motors <n>`; links become `example.com`. Fakes are keyed fingerprints of the real values, using a secret kept in `recordings/` (ignored by git), so the same real car or dealer always gets the same fake and nobody can work backwards. The script refuses to save if any original value survives.
+
+MarketCheck (built 2026-10-15):
+- Recorded 2 calls (2 of 475 this month): page 1 of `/v2/search/car/active` and of `/v2/search/car/recents`, same placeholder search as Auto.dev.
+- From the real data and docs: both endpoints share filters and response shape; 50 rows per page; `start` paging, stopping once `start + 50 >= num_found` (asking past it is an HTTP 422); `car_type=used` works; 5 of 50 active listings had no price; no description text; dealer latitude and longitude are text. The 90-day backfill for the placeholder search was 824 listings (about 17 pages a week, well under the 60-page budget).
+- **`dealer.id` is a dealer group or shared website, not one lot.** One id covered 7 AutoNation stores in different cities, another two CarMax lots, another a Toyota and a Honda store. **The physical lot is `mc_dealership.mc_rooftop_id`**: one name and street never has two rooftop ids. Step 5 must use the rooftop id as MarketCheck's dealer id in `dealer_source_ids`.
+- Dealers include street, phone, website and `seller_email`; recents also have `car_location.seller_name`. All are faked in fixtures.
+- `search_active()` (daily, 5 pages) and `backfill_recent()` (weekly, up to 60 pages, newest first, **no price or mileage limits** so the price model sees the whole range). Radius over 100 miles is limited to 100 with a log note. Open-ended year ranges are filled the same way as Auto.dev.
+- Fixture cleaning keys fake dealer names, streets and phones by the real values (not by each source's id), so the same real dealer gets the same fake from both sources. Fake emails use `example.com`, which the leak check allows.
+- `scripts/leak_check.py` runs as a git pre-commit hook (and with `--history` before pushes): no `.env` or recordings, no real password or keys, no key-like text, and fixtures hold only fake or known-public VINs, `example.com` emails and allow-listed web hosts.
+
+Step 4 done 2026-10-15. 95 tests pass. Real calls used: NHTSA 2, vPIC 2, Auto.dev 2 of 950, MarketCheck 2 of 475.

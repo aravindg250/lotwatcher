@@ -66,8 +66,8 @@ def check_file(path: str, content: str, secrets: dict[str, str]) -> list[str]:
             if not TEST_FAKES.search(match.group(0)):
                 problems.append(f"{path}: key-like text ({match.group(0)[:20]}…)")
     if path.startswith(FIXTURES):
-        if EMAIL.search(content):
-            problems.append(f"{path}: an email address")
+        if any(m.group(0).split("@")[1] != "example.com" for m in EMAIL.finditer(content)):
+            problems.append(f"{path}: an email address outside example.com")
         if IP.search(content):
             problems.append(f"{path}: an IP address")
         for vin in set(VIN.findall(content)):

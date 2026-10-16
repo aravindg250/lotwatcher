@@ -1,5 +1,5 @@
 {
-  "note": "Real autodev response shape, trimmed to 3 listings. Every value that could identify a car, dealer or person is replaced with an obvious fake (VINs starting with 0, Example Motors, example.com). Car details are real.",
+  "note": "Real autodev response shape, trimmed to 3 listings. Every value that could identify a car, dealer or person is replaced with an obvious fake (VINs starting with 0, Example Motors, 555 phones, example.com). Car details are real.",
   "recorded_at": "2026-10-16T00:23:56.637054+00:00",
   "request": {
     "params": {
@@ -40,22 +40,22 @@
           "usageType": "Personal Use"
         },
         "location": [
-          -96.72,
-          32.86
+          -96.74,
+          32.84
         ],
         "retailListing": {
           "carfaxUrl": "https://example.com/carfax/0FAKE000789962602",
           "city": "Dallas",
           "cpo": false,
-          "dealer": "Example Motors 220",
-          "dealerId": "d_example220",
+          "dealer": "Example Motors 5465",
+          "dealerId": "d_example646402",
           "miles": 51513,
           "photoCount": 38,
           "price": 32323,
           "primaryImage": "https://example.com/photos/0FAKE000789962602.jpg",
           "state": "TX",
           "used": true,
-          "vdp": "https://example.com/dealer220/listing/0FAKE000789962602",
+          "vdp": "https://example.com/dealer5465/listing/0FAKE000789962602",
           "zip": "75201"
         },
         "vehicle": {
@@ -98,22 +98,22 @@
           "usageType": "Personal Use"
         },
         "location": [
-          -96.72,
-          32.86
+          -96.74,
+          32.84
         ],
         "retailListing": {
           "carfaxUrl": "https://example.com/carfax/0FAKE000797685978",
           "city": "Dallas",
           "cpo": false,
-          "dealer": "Example Motors 220",
-          "dealerId": "d_example220",
+          "dealer": "Example Motors 5465",
+          "dealerId": "d_example646402",
           "miles": 38732,
           "photoCount": 39,
           "price": 32835,
           "primaryImage": "https://example.com/photos/0FAKE000797685978.jpg",
           "state": "TX",
           "used": true,
-          "vdp": "https://example.com/dealer220/listing/0FAKE000797685978",
+          "vdp": "https://example.com/dealer5465/listing/0FAKE000797685978",
           "zip": "75201"
         },
         "vehicle": {
@@ -156,22 +156,22 @@
           "usageType": "Personal Use"
         },
         "location": [
-          -96.768,
-          32.812
+          -96.628,
+          32.952
         ],
         "retailListing": {
           "carfaxUrl": "https://example.com/carfax/0FAKE000919874091",
           "city": "Dallas",
           "cpo": false,
-          "dealer": "Example Motors 7508",
-          "dealerId": "d_example7508",
+          "dealer": "Example Motors 4893",
+          "dealerId": "d_example720569",
           "miles": 35064,
           "photoCount": 30,
           "price": 32564,
           "primaryImage": "https://example.com/photos/0FAKE000919874091.jpg",
           "state": "TX",
           "used": true,
-          "vdp": "https://example.com/dealer7508/listing/0FAKE000919874091",
+          "vdp": "https://example.com/dealer4893/listing/0FAKE000919874091",
           "zip": "75201"
         },
         "vehicle": {

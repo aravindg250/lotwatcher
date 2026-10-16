@@ -10,25 +10,16 @@ Learned from real recordings (2026-10-15):
   They are removed before caching and never stored.
 """
 
-from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Any
 
 from lotwatcher.sources.client import SourceClient
-from lotwatcher.sources.filters import SearchFilters
+from lotwatcher.sources.filters import SearchFilters, SearchResult
 
 LISTINGS_PATH = "/listings"
 PAGE_SIZE = 20  # free-plan maximum; larger requests are silently capped
 DAILY_PAGE_LIMIT = 10  # agreed budget: about 300 calls a month for one saved search
 FIRST_VIN_YEAR = 1981  # 17-character VINs start with the 1981 model year
-
-
-@dataclass(frozen=True)
-class SearchResult:
-    listings: list[dict[str, Any]]
-    pages: int
-    # True when more pages existed but the page limit stopped the search
-    hit_page_limit: bool
 
 
 def _has_data_list(body: Any) -> bool:
