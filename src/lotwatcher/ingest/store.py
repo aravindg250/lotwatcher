@@ -1,14 +1,14 @@
-"""Save normalized listings. Newest values win; seen dates only ever widen.
-
-Price snapshots and delisting are step 6; duplicate merging (vehicle_id) is step 7.
+"""Save normalized listings and their daily price snapshot. Newest values win; seen dates only
+ever widen. Delisting is in delisting.py; duplicate merging (vehicle_id) is step 7.
 """
 
 from datetime import date
 
 from sqlalchemy import select
+from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
-from lotwatcher.db.models import Listing
+from lotwatcher.db.models import Listing, PriceSnapshot
 from lotwatcher.ingest.dealers import match_dealer
 from lotwatcher.ingest.normalize import NormalizedListing
 
@@ -57,6 +57,15 @@ def store_listing(session: Session, listing: NormalizedListing, seen_on: date) -
     # Seen today, so it's on sale, even if it was marked delisted before
     row.status = "active"
     row.delisted_on = None
-
     session.flush()
+
+    # One price snapshot per listing per day; a same-day rerun updates it instead of adding one
+    values = {"price": listing.price, "mileage": listing.mileage}
+    session.execute(
+        insert(PriceSnapshot)
+        .values(listing_id=row.id, snapshot_date=seen_on, **values)
+        .on_conflict_do_update(
+            constraint="uq_price_snapshots_listing_id_snapshot_date", set_=values
+        )
+    )
     return row.id

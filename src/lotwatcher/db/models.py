@@ -180,6 +180,31 @@ class Listing(Base):
     updated_at: Mapped[datetime] = updated_at_column()
 
 
+class SourceRun(Base):
+    """One daily search of one source. A day only counts as "missing" for delisting when
+    every run of that source that day completed (no error, no page limit hit)."""
+
+    __tablename__ = "source_runs"
+    __table_args__ = (
+        # A rerun replaces the day's row; an empty saved_search_id still counts as one value
+        UniqueConstraint(
+            "source", "saved_search_id", "run_date", postgresql_nulls_not_distinct=True
+        ),
+    )
+
+    id: Mapped[int] = id_column()
+    source: Mapped[str] = mapped_column(String(32))
+    saved_search_id: Mapped[int | None] = mapped_column(ForeignKey("saved_searches.id"))
+    run_date: Mapped[date] = mapped_column(Date)
+    pages: Mapped[int] = mapped_column(Integer, server_default=text("0"))
+    listings_seen: Mapped[int] = mapped_column(Integer, server_default=text("0"))
+    hit_page_limit: Mapped[bool] = mapped_column(Boolean, server_default=text("false"))
+    error: Mapped[str | None] = mapped_column(Text)
+    completed: Mapped[bool] = mapped_column(Boolean)
+    created_at: Mapped[datetime] = created_at_column()
+    updated_at: Mapped[datetime] = updated_at_column()
+
+
 class ApiCallCount(Base):
     """Calls made to one source in one calendar month (UTC). month is the 1st of the month."""
 
