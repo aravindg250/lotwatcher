@@ -199,3 +199,9 @@ NHTSA recalls and complaints (built 2026-10-15):
 - `fetch_recalls()` returns `Recall` records. `fetch_complaint_summary()` returns counts only (total, crashes, fires, injuries, deaths); complaint text isn't kept. Both are cached 7 days.
 - `UnexpectedResponse` (in `client.py`) is raised when a response doesn't have the expected shape.
 - **Shape check before caching (approved and built 2026-10-15):** `get_json(..., check=...)` raises `UnexpectedResponse` for a response the check rejects, and does not cache it. NHTSA requires a `results` list.
+
+NHTSA vPIC (built 2026-10-15):
+- Recorded 2 free calls: the widely published example VIN `1HGCM82633A004352` (2003 Honda Accord) and the same VIN with its last character changed (an invalid check digit, so no real car). Both are committed whole, as public data that identifies no one.
+- From the real data: all values are text; missing values are `""` or `"Not Applicable"`. **vPIC still fills in make, model and year for an invalid VIN** and reports the problem only in `ErrorCode` (`"0"` = clean; several codes are comma-separated).
+- `decode_vin()` returns a `VinDecode`: year, make, model, trim, engine (e.g. "3.0L 6-cyl Gasoline"), drivetrain, body style, error codes, `clean`, and `specs` (every filled-in field, for `vehicles.decoded_specs`). Cached forever; the VIN is trimmed and uppercased first.
+- Only a clean decode is trusted for exact VIN matching. Step 5 will also check the VIN's check digit locally, so bad VINs cost no call.
