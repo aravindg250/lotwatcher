@@ -5,6 +5,7 @@ API keys are sent with each request but never cached, logged or put in error mes
 """
 
 import logging
+from collections.abc import Callable
 from datetime import timedelta
 from typing import Any
 
@@ -83,9 +84,17 @@ class SourceClient:
         )
 
     def get_json(
-        self, path: str, params: dict[str, Any] | None = None, ttl: timedelta | None = DEFAULT_TTL
+        self,
+        path: str,
+        params: dict[str, Any] | None = None,
+        ttl: timedelta | None = DEFAULT_TTL,
+        check: Callable[[Any], bool] | None = None,
     ) -> Any:
-        """GET a JSON response, from the cache when fresh. ttl=None caches it forever."""
+        """GET a JSON response, from the cache when fresh. ttl=None caches it forever.
+
+        check, if given, must accept the response's shape; a response it rejects raises
+        UnexpectedResponse and is not cached, so the next run asks again.
+        """
         params = dict(params or {})
         key, request = cache_key(self.source, path, params)
 
@@ -95,6 +104,10 @@ class SourceClient:
             return cached
 
         body = self._fetch(path, params)
+        if check is not None and not check(body):
+            raise UnexpectedResponse(
+                f"{self.source} {path}: response did not have the expected shape"
+            )
         self._cache.put(key, self.source, request, body, ttl)
         return body
 

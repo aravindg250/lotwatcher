@@ -3,7 +3,7 @@ from datetime import timedelta
 import pytest
 from sqlalchemy import text
 
-from lotwatcher.sources.client import SourceRequestError
+from lotwatcher.sources.client import SourceRequestError, UnexpectedResponse
 
 from .conftest import SECRET_HEADER, SECRET_KEY, ScriptedServer, ok, status
 
@@ -85,3 +85,18 @@ def test_forever_cache_never_expires(make_client, clock):
         "vin": "decoded"
     }
     assert len(server.requests) == 1
+
+
+def has_results(body) -> bool:
+    return isinstance(body, dict) and isinstance(body.get("results"), list)
+
+
+def test_a_response_failing_the_shape_check_raises_and_is_not_cached(make_client):
+    server = ScriptedServer(ok({"wrong": True}), ok({"results": []}))
+    client = make_client(server)
+
+    with pytest.raises(UnexpectedResponse, match="testsource"):
+        client.get_json("/listings", check=has_results)
+
+    assert client.get_json("/listings", check=has_results) == {"results": []}
+    assert len(server.requests) == 2

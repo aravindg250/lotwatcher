@@ -39,14 +39,19 @@ class ComplaintSummary:
     deaths: int  # people killed, across all complaints
 
 
+def _has_results_list(body: Any) -> bool:
+    return isinstance(body, dict) and isinstance(body.get("results"), list)
+
+
 def _results(client: SourceClient, path: str, make: str, model: str, year: int) -> list[Any]:
+    # The check runs before caching, so a malformed response is never cached
     body = client.get_json(
-        path, params={"make": make, "model": model, "modelYear": str(year)}, ttl=CACHE_TTL
+        path,
+        params={"make": make, "model": model, "modelYear": str(year)},
+        ttl=CACHE_TTL,
+        check=_has_results_list,
     )
-    results = body.get("results") if isinstance(body, dict) else None
-    if not isinstance(results, list):
-        raise UnexpectedResponse(f"{client.source} {path}: expected a 'results' list")
-    return results
+    return body["results"]
 
 
 def _day_first_date(client: SourceClient, value: str | None) -> date | None:

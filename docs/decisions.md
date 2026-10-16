@@ -198,4 +198,4 @@ NHTSA recalls and complaints (built 2026-10-15):
 - From the real data: recall dates are **day-first** (`DD/MM/YYYY`) and complaint dates are month-first; recalls use `Count`, complaints use `count`.
 - `fetch_recalls()` returns `Recall` records. `fetch_complaint_summary()` returns counts only (total, crashes, fires, injuries, deaths); complaint text isn't kept. Both are cached 7 days.
 - `UnexpectedResponse` (in `client.py`) is raised when a response doesn't have the expected shape.
-- Known gap: a malformed but "successful" response is cached before its shape is checked. Proposed fix: `get_json` takes a shape check and only caches responses that pass it.
+- **Shape check before caching (approved and built 2026-10-15):** `get_json(..., check=...)` raises `UnexpectedResponse` for a response the check rejects, and does not cache it. NHTSA requires a `results` list.
