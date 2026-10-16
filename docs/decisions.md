@@ -171,3 +171,31 @@ Built in step 3:
 - Every request has a 30-second timeout; a timeout counts as a network error and is retried. (This and the line above confirmed 2026-10-15.)
 
 - **`Retry-After` limit (approved and built 2026-10-15):** if a server asks for a wait over 60 seconds, the client gives up on that request with a clear error instead of stalling the daily job. Exactly 60 seconds is still waited.
+
+### Step 4: source clients (planning, 2026-10-15)
+
+Findings from the providers' docs (2026-10-15):
+- Auto.dev: `GET https://api.auto.dev/listings`, key as an `Authorization: Bearer` header. Free plan: 1,000 calls a month, 5 per second, and **20 listings per page** (larger requests are silently capped). The mileage filter name is not yet confirmed.
+- MarketCheck: `GET https://api.marketcheck.com/v2/search/car/active`, key as an `api_key` query parameter. Free plan: 500 calls a month, 5 per second, 100-mile radius. 50 rows per page at most. Dealer latitude and longitude come back as text.
+- NHTSA vPIC: no key; a rate control with no published number.
+- NHTSA recalls and complaints: no key. Endpoint names (`recallsByVehicle`, `complaintsByVehicle` on api.nhtsa.gov) are not confirmed from NHTSA's own page, which blocks automated reading; the first real call will confirm them.
+- Neither company's terms on storing data could be read; the spec's Phase 5 terms review still applies.
+
+Decisions:
+- **VIN decoding: one VIN per GET request, cached forever.** Chosen over the spec's batches of 50, because it needs no change to the step 3 client. NHTSA calls are paced at 1 per second.
+- **Daily page limits, with one saved search:** Auto.dev 10 pages (200 listings, about 300 calls a month). MarketCheck daily search 5 pages (250 listings, about 150 a month). MarketCheck weekly backfill 60 pages once a week (about 260 a month). MarketCheck total about 410 of its 475 stop limit.
+- **MarketCheck radius is limited to 100 miles** (its free-tier maximum), with a log note when a saved search asks for more.
+- **The weekly backfill pulls recently sold or removed cars in the area**, as training data for the Phase 2 price model. The exact MarketCheck endpoint is to be confirmed in their docs before it is built.
+- **MarketCheck per-VIN price history is left out of Phase 1.** It costs one call per VIN; it may be used for shortlisted cars in Phase 2.
+- Build order: NHTSA recalls and complaints, then vPIC, then Auto.dev, then MarketCheck.
+- **The repo will be public (2026-10-15).** Raw recordings go in `recordings/`, which git ignores. Committed fixtures in `tests/fixtures/` are trimmed, and for Auto.dev and MarketCheck every identifying value is replaced with an obvious fake. NHTSA data is public and is committed trimmed. The leak check before each commit also scans fixtures for real-looking phone numbers, VINs and dealer web addresses.
+- **Commits and pushes are under the user's own account**, with no Claude co-author line (from 2026-10-15).
+- All source settings live in one file, `sources/settings.py`, with `build_client()` putting each key where its provider expects it. Chosen over settings per module, because the recorder needs them too.
+- `scripts/record_fixture.py` makes one approved real call through `SourceClient` and saves it to `recordings/`.
+
+NHTSA recalls and complaints (built 2026-10-15):
+- Recorded for the 2020 Toyota RAV4 (2 free calls), which confirmed both endpoints.
+- From the real data: recall dates are **day-first** (`DD/MM/YYYY`) and complaint dates are month-first; recalls use `Count`, complaints use `count`.
+- `fetch_recalls()` returns `Recall` records. `fetch_complaint_summary()` returns counts only (total, crashes, fires, injuries, deaths); complaint text isn't kept. Both are cached 7 days.
+- `UnexpectedResponse` (in `client.py`) is raised when a response doesn't have the expected shape.
+- Known gap: a malformed but "successful" response is cached before its shape is checked. Proposed fix: `get_json` takes a shape check and only caches responses that pass it.

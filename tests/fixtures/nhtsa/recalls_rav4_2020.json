@@ -1,0 +1,67 @@
+{
+  "note": "Real NHTSA response (public government data), trimmed from 6 to 3 results; Count adjusted to match.",
+  "recorded_at": "2026-10-15T23:55:52.617953+00:00",
+  "request": {
+    "params": {
+      "make": "Toyota",
+      "model": "RAV4",
+      "modelYear": "2020"
+    },
+    "path": "/recalls/recallsByVehicle",
+    "source": "nhtsa"
+  },
+  "response": {
+    "Count": 3,
+    "Message": "Results returned successfully",
+    "results": [
+      {
+        "Component": "FUEL SYSTEM, GASOLINE:DELIVERY:FUEL PUMP",
+        "Consequence": "If the fuel pump fails, the engine can stall while driving, increasing the risk of a crash.",
+        "Make": "TOYOTA",
+        "Manufacturer": "Toyota Motor Engineering & Manufacturing",
+        "Model": "RAV4",
+        "ModelYear": "2020",
+        "NHTSACampaignNumber": "20V682000",
+        "Notes": "Owners may also contact the National Highway Traffic Safety Administration Vehicle Safety Hotline at 1-888-327-4236 (TTY 1-800-424-9153), or go to www.safercar.gov.",
+        "Remedy": "Toyota will notify owners, and dealers will replace the fuel pump assembly with an improved one, free of charge.  Owners of specific models were notified that remedy parts were available starting January 21, 2021.  Owners of other models will be notified as remedy parts become available.  Remedy parts should be available for all affected vehicles by late March 2021.  Owners may contact Toyota customer service at 1-888-270-9371 or Lexus customer service at 1-800-255-3987.  Note: This recall is an expansion of recall 20V-012.  Toyota's number for this recall is 20TA02.  Lexus' number for this recall is 20LA01.",
+        "ReportReceivedDate": "04/11/2020",
+        "Summary": "Toyota Motor Engineering & Manufacturing (Toyota) is recalling certain 2018-2019 4Runner, 2019-2020 Avalon, 2019 Corolla Hatchback, 2017-2019 Highlander, 2018-2020 Camry, 2020 Corolla, 2018-2019 Land Cruiser, 2017-2020 Tacoma, 2019-2020 RAV4, 2019-2020 Sequoia, 2017-2020 Sienna, 2019-2020 Tundra, 2018-2020 Lexus ES350, 2017 Lexus GS200t, 2017-2019 Lexus GS350, 2019 Lexus GS300, 2018-2020 Lexus LC500h, 2019-2020 Lexus LS500, 2018-2019 Lexus GX460, 2017 Lexus IS200t, 2019 Lexus IS300, 2019 Lexus IS350, 2018-2020 Lexus LC500, 2018 Lexus LS500, 2019 Lexus LS500h, 2018-2019 Lexus LX570, 2017 Lexus RC200t, 2019 Lexus RC300, RC350, 2017 and 2019-2020 Lexus RX350, 2018-2020 RX350L, 2019 Lexus UX200, 2018-2019 Lexus NX300 vehicles.  The low-pressure fuel pump inside the fuel tank may fail.",
+        "overTheAirUpdate": false,
+        "parkIt": false,
+        "parkOutSide": false
+      },
+      {
+        "Component": "AIR BAGS:FRONTAL",
+        "Consequence": "In the event of a crash, an air bag that does not perform as designed can increase the risk of injury.",
+        "Make": "TOYOTA",
+        "Manufacturer": "Toyota Motor Engineering & Manufacturing",
+        "Model": "RAV4",
+        "ModelYear": "2020",
+        "NHTSACampaignNumber": "20V734000",
+        "Notes": "Owners may also contact the National Highway Traffic Safety Administration Vehicle Safety Hotline at 1-888-327-4236 (TTY 1-800-424-9153), or go to www.safercar.gov.",
+        "Remedy": "Toyota will notify owners, and dealers will replace the steering column, free of charge.  The recall began December 18, 2020.  Owners may contact Toyota customer service at 1-800-331-4331.  Toyota's number for this recall is 20TB17/20TA17.",
+        "ReportReceivedDate": "25/11/2020",
+        "Summary": "Toyota Motor Engineering & Manufacturing (Toyota) is recalling certain 2020-2021 Toyota Avalon and 2020 Avalon Hybrid, RAV4, and RAV4 Hybrid vehicles.  Breakaway pins within the steering column, designed to absorb energy and reduce injury during a crash, could have been damaged during production, possibly affecting the performance of the driver's air bag in the event of a crash.  As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard number 208, \"Occupant Crash Protection.\"",
+        "overTheAirUpdate": false,
+        "parkIt": false,
+        "parkOutSide": false
+      },
+      {
+        "Component": "ENGINE AND ENGINE COOLING",
+        "Consequence": "A coolant leak can cause the engine to overheat and cause a vehicle stall in conventional gasoline vehicles, increasing the risk of a crash. Additionally, for all involved vehicles, the engine may get damaged mechanically, possibly resulting in an engine oil leak, increasing the risk of a fire.",
+        "Make": "TOYOTA",
+        "Manufacturer": "Toyota Motor Engineering & Manufacturing",
+        "Model": "RAV4",
+        "ModelYear": "2020",
+        "NHTSACampaignNumber": "20V064000",
+        "Notes": "Owners may also contact the National Highway Traffic Safety Administration Vehicle Safety Hotline at 1-888-327-4236 (TTY 1-800-424-9153), or go to www.safercar.gov.",
+        "Remedy": "Toyota will notify owners, and dealers will inspect and replace the engine including the engine block, as necessary, free of charge.  The recall began April 3, 2020.  Owners may contact Toyota customer service at 1-888-270-9371 or Lexus at 1-800-255-3987.  Toyota's number for this recall is 20TA04.  Lexus' number for this recall is 20LA02.",
+        "ReportReceivedDate": "06/02/2020",
+        "Summary": "Toyota Motor Engineering & Manufacturing (Toyota) is recalling certain 2020 Toyota Avalon Hybrid, Camry, Camry Hybrid and  Lexus ES300h and 2019-2020 RAV4 and RAV4 Hybrid vehicles equipped with 2.5L 4-Cylinder engines.  Porosity in the engine castings may result in cracks than can allow coolant to leak internally and/or externally.",
+        "overTheAirUpdate": false,
+        "parkIt": false,
+        "parkOutSide": false
+      }
+    ]
+  }
+}

@@ -38,6 +38,10 @@ class SourceRequestError(Exception):
         self.status_code = status_code
 
 
+class UnexpectedResponse(Exception):
+    """A request succeeded, but the response doesn't have the shape the source code expects."""
+
+
 def _is_temporary(status_code: int) -> bool:
     return status_code == 429 or status_code >= 500
 

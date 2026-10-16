@@ -20,6 +20,9 @@ services:
       - ./src:/app/src
       - ./tests:/app/tests
       - ./alembic.ini:/app/alembic.ini
+      - ./scripts:/app/scripts
+      # Raw API recordings (ignored by git)
+      - ./recordings:/app/recordings
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
       interval: 5s

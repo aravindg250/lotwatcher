@@ -1,0 +1,85 @@
+{
+  "note": "Real NHTSA response (public government data), trimmed from 635 to 3 results; count adjusted to match.",
+  "recorded_at": "2026-10-15T23:55:56.835990+00:00",
+  "request": {
+    "params": {
+      "make": "Toyota",
+      "model": "RAV4",
+      "modelYear": "2020"
+    },
+    "path": "/complaints/complaintsByVehicle",
+    "source": "nhtsa"
+  },
+  "response": {
+    "count": 3,
+    "message": "Results returned successfully",
+    "results": [
+      {
+        "components": "SERVICE BRAKES, HYDRAULIC,VEHICLE SPEED CONTROL",
+        "crash": true,
+        "dateComplaintFiled": "07/14/2026",
+        "dateOfIncident": "05/01/2026",
+        "fire": false,
+        "manufacturer": "Toyota Motor Corporation",
+        "numberOfDeaths": 0,
+        "numberOfInjuries": 1,
+        "odiNumber": 11750253,
+        "products": [
+          {
+            "manufacturer": "Toyota Motor Corporation",
+            "productMake": "TOYOTA",
+            "productModel": "RAV4",
+            "productYear": "2020",
+            "type": "Vehicle"
+          }
+        ],
+        "summary": "The contact owned a 2020 Toyota Rav4. The contact stated that while pulling into a vertical spot and making a right turn, the vehicle suddenly accelerated, jumped the curb, the sidewalk, and continued driving down the sidewalk and crashed into a building. The brake pedal was depressed but was stuck. The vehicle failed to turn off, and the parking brake failed to engage. There were no warning lights illuminated. The air bags deployed as needed. A Police report was filed. The EMS workers were unable to depress the brake pedal. The undercarriage of the dashboard ripped the skin off both shins. The contact was transported to the trauma hospital, where medical attention was provided for four weeks to close the wounds. A skin graft was performed on both legs. The vehicle was towed to a tow lot. The local dealer was not contacted. The vehicle was not diagnosed or repaired. The manufacturer was not notified of the failure. The vehicle was deemed a total loss by the insurance company. The black box data was retrieved, which showed the acceleration, but no information if the brake pedal was depressed. The approximate failure mileage was 25,000.",
+        "vin": "4T3DWRFV1LU"
+      },
+      {
+        "components": "UNKNOWN OR OTHER",
+        "crash": false,
+        "dateComplaintFiled": "01/03/2023",
+        "dateOfIncident": "12/28/2022",
+        "fire": true,
+        "manufacturer": "Toyota Motor Corporation",
+        "numberOfDeaths": 0,
+        "numberOfInjuries": 0,
+        "odiNumber": 11499882,
+        "products": [
+          {
+            "manufacturer": "Toyota Motor Corporation",
+            "productMake": "TOYOTA",
+            "productModel": "RAV4",
+            "productYear": "2020",
+            "type": "Vehicle"
+          }
+        ],
+        "summary": "After 20 minutes of driving, the vehicle caught fire under the hood and was completely destroyed.    When I first started driving the car that morning, I noticed an odd smell coming from the heater.  It didn't smell like smoke or burning; I best equate it to the smell of a hair dryer.  This is the first time I'd ever smelled that odor in this car.  At this point there were no warning messages or alerts on the dashboard that would indicate an issue.  After driving for around 20 minutes, I noticed smoke coming from under the hood.  There were still no warning lights on the dashboard.  I immediately pulled over into an open parallel parking spot on the side of the road (busy city street) and shut the car off.  While I was assisting the other 2 passengers out of the car, flames became visible coming from under the hood.  The source of the flames appeared to be the top driver's side under the hood (in front of steering wheel).  We called 911 and stepped back to a safe distance.  The fire was extremely aggressive and the entire vehicle was engulfed in flames in just a couple minutes.  The fire was so intense that it caught the car parked in front on fire (which also became completely destroyed).  The fire department responded after roughly 5 minutes and put out the fire.  Fortunately, no injuries resulted from this incident.  There was so much damage to the vehicle that the fire investigator was not able to offer a definitive opinion as to which specific engine/battery component likely started the fire.  The remains of the car are currently in possession of GEICO.  I was the original owner of the vehicle, which had no history of accidents, repairs, or modifications.  It had been regularly serviced for routine maintenance at the local Toyota service department, most recently in early December 2022 (approximately 3 weeks prior to the fire).",
+        "vin": "JTMEWRFV9LD"
+      },
+      {
+        "components": "SUSPENSION,UNKNOWN OR OTHER",
+        "crash": false,
+        "dateComplaintFiled": "09/25/2026",
+        "dateOfIncident": "05/18/2026",
+        "fire": false,
+        "manufacturer": "Toyota Motor Corporation",
+        "numberOfDeaths": 0,
+        "numberOfInjuries": 0,
+        "odiNumber": 11766886,
+        "products": [
+          {
+            "manufacturer": "Toyota Motor Corporation",
+            "productMake": "TOYOTA",
+            "productModel": "RAV4",
+            "productYear": "2020",
+            "type": "Vehicle"
+          }
+        ],
+        "summary": "Its the sway bar stabilizer bar in the front end of my 2020 rav4 i bought it brand new in 2020. After just 24k miles i had to replace the sway bar now just a few months later ima gonna have to get it back in the shop because its making the same noise as before",
+        "vin": "JTMA1RFV7LJ"
+      }
+    ]
+  }
+}

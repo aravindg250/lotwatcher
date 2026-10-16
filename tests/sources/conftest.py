@@ -1,4 +1,6 @@
+import json
 from datetime import UTC, datetime, timedelta
+from pathlib import Path
 
 import httpx2
 import pytest
@@ -52,6 +54,15 @@ class ScriptedServer:
 
 def ok(body=None) -> httpx2.Response:
     return httpx2.Response(200, json=body if body is not None else {"ok": True})
+
+
+FIXTURES = Path(__file__).parent.parent / "fixtures"
+
+
+def recorded(name: str) -> httpx2.Response:
+    """Replay a recorded response from tests/fixtures/, e.g. recorded("nhtsa/recalls_rav4_2020")."""
+    fixture = json.loads((FIXTURES / f"{name}.json").read_text())
+    return httpx2.Response(200, json=fixture["response"])
 
 
 def status(code: int, headers: dict[str, str] | None = None) -> httpx2.Response:
