@@ -157,6 +157,11 @@ class Listing(Base):
     source_listing_id: Mapped[str] = mapped_column(String(200))
     # The VIN this source reported, kept even if the listing is merged or unmerged
     vin: Mapped[str | None] = mapped_column(String(17), index=True)
+    # What this source reported; merging needs them before a listing has a vehicle
+    year: Mapped[int | None] = mapped_column(Integer)
+    make: Mapped[str | None] = mapped_column(String(100))
+    model: Mapped[str | None] = mapped_column(String(100))
+    trim: Mapped[str | None] = mapped_column(String(200))
     dealer_id: Mapped[int | None] = mapped_column(ForeignKey("dealers.id"), index=True)
     url: Mapped[str | None] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(16), server_default=text("'active'"))

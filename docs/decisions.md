@@ -225,3 +225,13 @@ MarketCheck (built 2026-10-15):
 - `scripts/leak_check.py` runs as a git pre-commit hook (and with `--history` before pushes): no `.env` or recordings, no real password or keys, no key-like text, and fixtures hold only fake or known-public VINs, `example.com` emails and allow-listed web hosts.
 
 Step 4 done 2026-10-15. 95 tests pass. Real calls used: NHTSA 2, vPIC 2, Auto.dev 2 of 950, MarketCheck 2 of 475.
+
+### Step 5: normalize listings and match dealers (done 2026-10-16)
+
+- New package `lotwatcher/ingest/`: `normalize.py` (pure conversion), `dealers.py` (dealer matching), `store.py` (saving listings). Plus `lotwatcher/geo.py` (distance in miles).
+- Migration `4f21ecd692ac` adds `listings.year`, `make`, `model`, `trim` (decided earlier: what each source reported).
+- `NormalizedListing` / `NormalizedDealer` are the one shared shape for every source.
+- Auto.dev's listing id is the VIN (it has no other id). MarketCheck's dealer id is `mc_rooftop_id`; if a listing has none, it gets **no dealer** rather than falling back to the group id.
+- A price of 0 or less means "no price shown" and is stored as empty, never $0. Text is trimmed and spaces collapsed, but capitals are kept (title-casing would turn "RAV4" into "Rav4"). Phones are digits only.
+- **Dealer matching:** a known source dealer id goes to the same dealer; otherwise a dealer with a name at least 85% similar (ignoring case and punctuation) **within 1 mile** is the same dealer; otherwise a new one. Phone alone is not used (dealer groups share numbers). A dealer with no location is never matched by name alone. A source that lacks a value never erases a known one.
+- **Saving a listing:** newest values win; `first_seen_on` and `last_seen_on` only ever widen; a listing seen again is active (a delisted one that reappears is active again). The same car from two sources stays two listings until duplicate merging (step 7).
